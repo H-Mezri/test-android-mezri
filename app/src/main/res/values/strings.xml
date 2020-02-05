@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Big Burger</string>
+    <string name="unknown_error">Erreur inconnue.</string>
+    <string name="cant_load_this_page">Impossible de charger cette page.</string>
+    <string name="no_network_available">Vous n\'êtes pas connecté à internet.</string>
+    <string name="operation_in_progress">Chargement en cours&#8230;</string>
+    <string name="products_not_found">La liste des produits n\'est pas disponible.</string>
+    <string name="network_error">Impossible de télécharger la liste des produits.</string>
+    <string name="burgers">Burgers</string>
+    <string name="try_again">réessayer</string>
+    <string name="todo">// TODO</string>
+    <string name="add_to_basket">ajouter au panier</string>
+    <string name="product_added_to_basket">Élément ajouté au panier.</string>
+    <string name="product_removed_to_basket">Élément supprimé du panier.</string>
+    <string name="basket">Basket</string>
+    <string name="no_product_in_basket">Aucun produit dans votre panier.</string>
+    <string name="scroll_down_to_animate_toolbar">Scroll down to animate toolbar!</string>
+    <string name="basket_price">Prix de votre panier : %.2f €</string>
+    <string name="product_price">%.2f €</string>
+</resources>
