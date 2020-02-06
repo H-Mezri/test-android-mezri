@@ -126,7 +126,7 @@
                     android:text="@{String.format(@string/product_price, viewModel.product.price)}"
                     android:textColor="@color/colorPrice"
                     android:textSize="@dimen/text_normal_size"
-                    android:textStyle="normal"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@id/viewProductDetails"
                     app:layout_constraintTop_toBottomOf="@id/txtBurgerTitle"
                     tools:text="Burger price €" />
