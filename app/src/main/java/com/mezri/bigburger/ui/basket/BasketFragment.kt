@@ -92,25 +92,12 @@ class BasketFragment : BaseFragment() {
     }
 
     override fun removeObservers() {
-        if (fragmentViewModel.informationToShow.hasObservers()) {
-            fragmentViewModel.informationToShow.removeObservers(viewLifecycleOwner)
-        }
         if (fragmentViewModel.isBasketProductsChanged.hasObservers()) {
             fragmentViewModel.isBasketProductsChanged.removeObservers(viewLifecycleOwner)
         }
     }
 
     override fun initObservers() {
-        // observer for app message and errors
-        fragmentViewModel.informationToShow.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                Snackbar.make(
-                    rootLayout,
-                    getString(it.messageId),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            }
-        })
         fragmentViewModel.isBasketProductsChanged.observe(viewLifecycleOwner, Observer {
             (recyclerBasketProducts.adapter as BasketRecyclerAdapter).updateBasketProducts(
                 fragmentViewModel.basketProducts

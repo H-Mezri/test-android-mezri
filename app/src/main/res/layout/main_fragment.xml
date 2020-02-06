@@ -24,7 +24,9 @@
     <RelativeLayout
         android:id="@+id/rootLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_gravity="center">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerProductsList"
@@ -55,7 +57,7 @@
                 android:layout_margin="@dimen/text_normal_margin"
                 android:gravity="center_horizontal"
                 android:text="@string/cant_load_this_page"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorPrimaryText"
                 android:textSize="@dimen/text_important_size"
                 android:textStyle="bold"
                 tools:textColor="@color/colorPrimary" />

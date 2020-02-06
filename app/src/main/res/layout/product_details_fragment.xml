@@ -13,21 +13,21 @@
         android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="@color/backgroundColor"
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_size"
-            android:background="@color/darkButtonColor"
+            android:background="@color/colorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/collapsingToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:contentScrim="@color/darkButtonColor"
+                app:contentScrim="@color/colorPrimary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <ImageView
@@ -100,6 +100,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="70dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -108,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@{viewModel.product.title}"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorPrimaryText"
                     android:textSize="@dimen/text_important_size"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@id/txtBurgerPrice"
@@ -122,7 +124,7 @@
                     android:layout_marginBottom="20dp"
                     android:gravity="center"
                     android:text="@{String.format(@string/product_price, viewModel.product.price)}"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorPrice"
                     android:textSize="@dimen/text_normal_size"
                     android:textStyle="normal"
                     app:layout_constraintBottom_toTopOf="@id/viewProductDetails"
@@ -135,7 +137,7 @@
                     android:layout_marginBottom="20dp"
                     android:gravity="center"
                     android:text="@{viewModel.product.description}"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorPrimaryText"
                     android:textSize="@dimen/text_normal_size"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@id/viewProductDetails"
@@ -148,7 +150,7 @@
                     android:layout_marginBottom="20dp"
                     android:gravity="center"
                     android:text="@string/scroll_down_to_animate_toolbar"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorPrimaryText"
                     android:textSize="@dimen/text_normal_size"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@id/viewProductDetails"
