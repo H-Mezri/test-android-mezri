@@ -58,9 +58,14 @@ class BasketRecyclerAdapter(
     /**
      * On basket product changed notify adapter
      */
-    fun updateBasketProducts(products: MutableList<Product>) {
-        productBasketList.clear()
-        productBasketList.addAll(products)
-        notifyDataSetChanged()
+    fun updateBasketProducts(productUpdated: Product) {
+        val itemChangedPosition = productBasketList.indexOfFirst { it.id == productUpdated.id }
+        if (productUpdated.amount.toInt() == 0) {
+            productBasketList.removeAt(itemChangedPosition)
+            notifyItemRemoved(itemChangedPosition)
+        } else {
+            productBasketList[itemChangedPosition] = productUpdated
+            notifyItemChanged(itemChangedPosition)
+        }
     }
 }

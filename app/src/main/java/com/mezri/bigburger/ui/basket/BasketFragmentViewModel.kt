@@ -6,21 +6,27 @@ import com.mezri.bigburger.ui.base.BaseViewModel
 
 class BasketFragmentViewModel : BaseViewModel() {
 
-    val isBasketProductsChanged = MutableLiveData<Boolean>().apply { value = false }
+    val productUpdated = MutableLiveData<Product>().apply { value = null }
     var basketTotalPrice: Float = 0f
 
     override fun addProductToBasket(product: Product) {
         super.addProductToBasket(product)
         // calculate new basket price
         basketTotalPrice += product.price
-        isBasketProductsChanged.value = true
+        val basketProductChanged = basketProducts.find { it.id == product.id }?.copy()
+        productUpdated.value = basketProductChanged
     }
 
     override fun removeProductFromBasket(product: Product) {
         super.removeProductFromBasket(product)
         // calculate new basket price
         basketTotalPrice -= product.price
-        isBasketProductsChanged.value = true
+        var basketProductChanged = basketProducts.find { it.id == product.id }?.copy()
+        if (basketProductChanged == null) {
+            // in case product removed
+            basketProductChanged = product.apply { amount = 0 }
+        }
+        productUpdated.value = basketProductChanged
     }
 
     fun calculateBasketTotalPrice() {

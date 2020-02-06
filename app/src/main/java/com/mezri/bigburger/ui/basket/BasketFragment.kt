@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.mezri.bigburger.R
 import com.mezri.bigburger.data.model.Product
 import com.mezri.bigburger.ui.base.BaseFragment
@@ -72,12 +71,13 @@ class BasketFragment : BaseFragment() {
     }
 
     private fun initRecyclerViewList() {
+        fragmentViewModel.loadBasketProducts()
         // Init recycler view
         recyclerBasketProducts.apply {
             layoutManager = LinearLayoutManager(requireContext())
 
             adapter = BasketRecyclerAdapter(
-                mutableListOf(),
+                fragmentViewModel.basketProducts.toMutableList(),
                 object :
                     BasketRecyclerAdapter.OnItemClickListener {
                     override fun onAddToBasket(product: Product) {
@@ -92,19 +92,19 @@ class BasketFragment : BaseFragment() {
     }
 
     override fun removeObservers() {
-        if (fragmentViewModel.isBasketProductsChanged.hasObservers()) {
-            fragmentViewModel.isBasketProductsChanged.removeObservers(viewLifecycleOwner)
+        if (fragmentViewModel.productUpdated.hasObservers()) {
+            fragmentViewModel.productUpdated.removeObservers(viewLifecycleOwner)
         }
     }
 
     override fun initObservers() {
-        fragmentViewModel.isBasketProductsChanged.observe(viewLifecycleOwner, Observer {
-            (recyclerBasketProducts.adapter as BasketRecyclerAdapter).updateBasketProducts(
-                fragmentViewModel.basketProducts
-            )
-            // update total basket price
-            txtBasketPrice.text =
-                getString(R.string.basket_price, fragmentViewModel.basketTotalPrice)
+        fragmentViewModel.productUpdated.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                (recyclerBasketProducts.adapter as BasketRecyclerAdapter).updateBasketProducts(it)
+                // update total basket price
+                txtBasketPrice.text =
+                    getString(R.string.basket_price, fragmentViewModel.basketTotalPrice)
+            }
         })
     }
 

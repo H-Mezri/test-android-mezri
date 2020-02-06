@@ -1,6 +1,5 @@
 package com.mezri.bigburger.ui.base
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,9 +18,7 @@ abstract class BaseViewModel : ViewModel() {
     // view model repository
     protected lateinit var repository: Repository
     // products in basket list
-    val basketProducts: MutableList<Product> by lazy {
-        repository.loadBasketProductList()
-    }
+    val basketProducts: MutableList<Product> = mutableListOf()
 
     /**
      * inject dependencies into view model (repository, schedulers)
@@ -39,16 +36,17 @@ abstract class BaseViewModel : ViewModel() {
      * Add product to basket
      */
     open fun addProductToBasket(product: Product) {
-        val basketProduct = basketProducts.find { it.id == product.id }
+        var basketProduct = basketProducts.find { it.id == product.id }
         if (basketProduct != null) {
-            repository.updateProductAmount(product, 1)
+            repository.updateProductAmount(basketProduct, 1)
             basketProduct.amount++
         } else {
-            product.amount++
-            repository.addProductToBasket(product)
+            basketProduct = product.copy()
+            basketProduct.amount++
+            repository.addProductToBasket(basketProduct)
+            basketProducts.add(basketProduct)
         }
         handleAppMessage(AppMessages.PRODUCT_ADDED_TO_BASKET.getAppError())
-        Log.e(TAG, basketProducts.toString())
     }
 
     /**
@@ -70,7 +68,6 @@ abstract class BaseViewModel : ViewModel() {
             }
         }
         handleAppMessage(AppMessages.PRODUCT_REMOVED_TO_BASKET.getAppError())
-        Log.e(TAG, basketProducts.toString())
     }
 
     private val _informationToShow = MutableLiveData<AppInformation>().apply { value = null }
@@ -86,5 +83,10 @@ abstract class BaseViewModel : ViewModel() {
 
     open fun clearTemporaryData() {
         _informationToShow.value = null
+        basketProducts.clear()
+    }
+
+    fun loadBasketProducts() {
+        basketProducts.addAll(repository.loadBasketProductList())
     }
 }
