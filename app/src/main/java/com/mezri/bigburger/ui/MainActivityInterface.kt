@@ -6,5 +6,4 @@ import com.mezri.bigburger.data.room.AppDatabase
 
 interface MainActivityInterface {
     fun showFragment(fragment: Fragment, view: View?)
-    fun getAppDataBase(): AppDatabase
 }

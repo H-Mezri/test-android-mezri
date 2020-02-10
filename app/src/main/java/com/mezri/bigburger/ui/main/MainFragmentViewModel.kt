@@ -3,14 +3,17 @@ package com.mezri.bigburger.ui.main
 import androidx.lifecycle.MutableLiveData
 import com.mezri.bigburger.data.errors.AppMessages
 import com.mezri.bigburger.data.model.Product
+import com.mezri.bigburger.data.repository.Repository
 import com.mezri.bigburger.ui.base.BaseViewModel
 import com.mezri.bigburger.utils.idling.EspressoIdlingResource
+import com.mezri.bigburger.utils.schedulers.BaseSchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 
-class MainFragmentViewModel : BaseViewModel() {
+class MainFragmentViewModel(repository: Repository, schedulerProvider: BaseSchedulerProvider) :
+    BaseViewModel(repository, schedulerProvider) {
 
     // composite to handle requests
-    private var compositeDisposable: CompositeDisposable = CompositeDisposable()
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     // list of product in cache
     val productsListCache = mutableListOf<Product>()

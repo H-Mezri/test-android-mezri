@@ -8,6 +8,7 @@ import com.mezri.bigburger.data.network.dto.UNKNOWN_VALUE
 
 const val PRICE_STRING_FORMAT = "%.2f"
 const val COMMA = ","
+const val DOT = "."
 
 data class Product(
     val id: Int,
@@ -50,7 +51,7 @@ data class Product(
     }
 
     fun getPriceAsInt(): Int {
-        return PRICE_STRING_FORMAT.format(price).replace(COMMA, EMPTY).toInt()
+        return PRICE_STRING_FORMAT.format(price).replace(COMMA, EMPTY).replace(DOT, EMPTY).toInt()
     }
 
     companion object CREATOR : Parcelable.Creator<Product> {

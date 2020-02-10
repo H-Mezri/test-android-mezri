@@ -68,4 +68,12 @@ class BasketRecyclerAdapter(
             notifyItemChanged(itemChangedPosition)
         }
     }
+
+    /**
+     * On product basket list loaded
+     */
+    fun setProducts(productBasketList: MutableList<Product>) {
+        this.productBasketList.addAll(productBasketList)
+        notifyDataSetChanged()
+    }
 }

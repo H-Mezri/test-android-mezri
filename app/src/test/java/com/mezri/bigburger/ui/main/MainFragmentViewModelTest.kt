@@ -2,13 +2,11 @@ package com.mezri.bigburger.ui.main
 
 import android.os.Build
 import com.mezri.bigburger.data.errors.AppMessages
-import com.mezri.bigburger.data.repository.Repository
 import com.mezri.bigburger.ui.base.BaseViewModelTest
-import com.mezri.bigburger.utils.schedulers.TrampolineSchedulerProvider
 import io.reactivex.Single
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
+import org.koin.test.inject
 import org.mockito.Mockito.`when`
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
@@ -18,22 +16,12 @@ import org.robolectric.annotation.Config
 class MainFragmentViewModelTest : BaseViewModelTest() {
 
     // View model to test
-    private lateinit var mainFragmentViewModel: MainFragmentViewModel
-
-    @Mock
-    lateinit var repository: Repository
-
-    override fun setup() {
-        super.setup()
-        // init view model
-        mainFragmentViewModel = MainFragmentViewModel()
-        mainFragmentViewModel.initViewModelDependencies(repository, TrampolineSchedulerProvider())
-    }
+    private val mainFragmentViewModel: MainFragmentViewModel by inject()
 
     @Test
     fun testGetProducts_OK() {
         // given
-        `when`(repository.loadProductList()).thenReturn(
+        `when`(mainFragmentViewModel.repository.loadProductList()).thenReturn(
             Single.just(productsList)
         )
         assert(mainFragmentViewModel.productsListCache.isEmpty())
@@ -49,7 +37,7 @@ class MainFragmentViewModelTest : BaseViewModelTest() {
     fun testGetProducts_KO_NETWORK_ERROR() {
         // given
         val throwable = Throwable()
-        `when`(repository.loadProductList()).thenReturn(Single.error(throwable))
+        `when`(mainFragmentViewModel.repository.loadProductList()).thenReturn(Single.error(throwable))
         assert(mainFragmentViewModel.productsListCache.isEmpty())
 
         // when
@@ -67,7 +55,7 @@ class MainFragmentViewModelTest : BaseViewModelTest() {
     @Test
     fun testGetProducts_KO_ALBUMS_NOT_FOUND() {
         // given
-        `when`(repository.loadProductList()).thenReturn(
+        `when`(mainFragmentViewModel.repository.loadProductList()).thenReturn(
             Single.just(listOf())
         )
         assert(mainFragmentViewModel.productsListCache.isEmpty())

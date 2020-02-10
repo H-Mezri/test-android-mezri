@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mezri.bigburger.R
 import com.mezri.bigburger.data.model.Product
 import com.mezri.bigburger.ui.base.BaseFragment
 import com.mezri.bigburger.ui.base.BaseViewModel
 import kotlinx.android.synthetic.main.basket_fragment.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BasketFragment : BaseFragment() {
 
@@ -22,15 +22,7 @@ class BasketFragment : BaseFragment() {
     }
 
     // fragment view model
-    private lateinit var fragmentViewModel: BasketFragmentViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        // init view model
-        fragmentViewModel = ViewModelProviders.of(this).get(BasketFragmentViewModel::class.java)
-
-        // inject dependencies in view model
-        super.onCreate(savedInstanceState)
-    }
+    private val fragmentViewModel: BasketFragmentViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,13 +63,12 @@ class BasketFragment : BaseFragment() {
     }
 
     private fun initRecyclerViewList() {
-        fragmentViewModel.loadBasketProducts()
         // Init recycler view
         recyclerBasketProducts.apply {
             layoutManager = LinearLayoutManager(requireContext())
 
             adapter = BasketRecyclerAdapter(
-                fragmentViewModel.basketProducts.toMutableList(),
+                mutableListOf(),
                 object :
                     BasketRecyclerAdapter.OnItemClickListener {
                     override fun onAddToBasket(product: Product) {
@@ -115,7 +106,9 @@ class BasketFragment : BaseFragment() {
         fragmentViewModel.calculateBasketTotalPrice()
         // update total basket price
         txtBasketPrice.text = getString(R.string.basket_price, fragmentViewModel.basketTotalPrice)
+        // init recycler view products list
+        (recyclerBasketProducts.adapter as BasketRecyclerAdapter).setProducts(fragmentViewModel.basketProducts.toMutableList())
     }
 
-    override fun getFragmentViewModel(): BaseViewModel = fragmentViewModel
+    override fun getViewModel(): BaseViewModel = fragmentViewModel
 }

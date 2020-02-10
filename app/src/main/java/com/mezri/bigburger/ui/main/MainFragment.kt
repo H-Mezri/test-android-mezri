@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.TransitionInflater
 import com.google.android.material.snackbar.Snackbar
@@ -16,6 +15,7 @@ import com.mezri.bigburger.ui.base.BaseFragment
 import com.mezri.bigburger.ui.basket.BasketFragment
 import com.mezri.bigburger.ui.burgerdetails.ProductDetailsFragment
 import kotlinx.android.synthetic.main.main_fragment.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainFragment : BaseFragment() {
@@ -24,11 +24,10 @@ class MainFragment : BaseFragment() {
     }
 
     // fragment view model
-    private lateinit var fragmentViewModel: MainFragmentViewModel
+    private val fragmentViewModel: MainFragmentViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // init view model
-        fragmentViewModel = ViewModelProviders.of(this).get(MainFragmentViewModel::class.java)
+        super.onCreate(savedInstanceState)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             sharedElementReturnTransition =
@@ -37,8 +36,6 @@ class MainFragment : BaseFragment() {
                 TransitionInflater.from(context)
                     .inflateTransition(android.R.transition.no_transition)
         }
-        // inject dependencies in view model
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -205,5 +202,5 @@ class MainFragment : BaseFragment() {
         }
     }
 
-    override fun getFragmentViewModel() = fragmentViewModel
+    override fun getViewModel() = fragmentViewModel
 }

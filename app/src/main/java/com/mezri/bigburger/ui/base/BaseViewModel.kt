@@ -9,28 +9,12 @@ import com.mezri.bigburger.data.model.Product
 import com.mezri.bigburger.data.repository.Repository
 import com.mezri.bigburger.utils.schedulers.BaseSchedulerProvider
 
-abstract class BaseViewModel : ViewModel() {
+abstract class BaseViewModel(val repository: Repository, val schedulerProvider : BaseSchedulerProvider) : ViewModel() {
 
     protected val TAG = this::class.java.simpleName
 
-    // Schedulers
-    protected lateinit var schedulerProvider: BaseSchedulerProvider
-    // view model repository
-    protected lateinit var repository: Repository
     // products in basket list
     val basketProducts: MutableList<Product> = mutableListOf()
-
-    /**
-     * inject dependencies into view model (repository, schedulers)
-     * {in a bigger project we can use Dagger2 to inject repository in view models}
-     */
-    fun initViewModelDependencies(
-        repository: Repository,
-        schedulerProvider: BaseSchedulerProvider
-    ) {
-        this.repository = repository
-        this.schedulerProvider = schedulerProvider
-    }
 
     /**
      * Add product to basket

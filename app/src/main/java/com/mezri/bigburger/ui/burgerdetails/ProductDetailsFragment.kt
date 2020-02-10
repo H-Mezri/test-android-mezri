@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.transition.TransitionInflater
 import com.google.android.material.snackbar.Snackbar
 import com.mezri.bigburger.R
@@ -19,11 +18,12 @@ import com.mezri.bigburger.databinding.ProductDetailsFragmentBinding
 import com.mezri.bigburger.ui.base.BaseFragment
 import com.mezri.bigburger.utils.glide.load
 import kotlinx.android.synthetic.main.product_details_fragment.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProductDetailsFragment : BaseFragment(), View.OnClickListener {
 
     // fragment view model
-    private lateinit var fragmentViewModel: ProductDetailsFragmentViewModel
+    private val fragmentViewModel: ProductDetailsFragmentViewModel by viewModel()
 
     companion object {
         private const val PRODUCT_KEY = "product"
@@ -39,6 +39,7 @@ class ProductDetailsFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         // shared elements configuration
         postponeEnterTransition()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -49,15 +50,9 @@ class ProductDetailsFragment : BaseFragment(), View.OnClickListener {
                     .inflateTransition(android.R.transition.no_transition)
         }
 
-        // init view model
-        fragmentViewModel =
-            ViewModelProviders.of(this).get(ProductDetailsFragmentViewModel::class.java)
         fragmentViewModel.initBurger(
             arguments?.getParcelable(PRODUCT_KEY) ?: throw Exception("Product not found")
         )
-
-        // inject dependencies in view model
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -132,7 +127,7 @@ class ProductDetailsFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-    override fun getFragmentViewModel() = fragmentViewModel
+    override fun getViewModel() = fragmentViewModel
 
     /**
      * Handle option menu click

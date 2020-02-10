@@ -2,9 +2,12 @@ package com.mezri.bigburger.ui.basket
 
 import androidx.lifecycle.MutableLiveData
 import com.mezri.bigburger.data.model.Product
+import com.mezri.bigburger.data.repository.Repository
 import com.mezri.bigburger.ui.base.BaseViewModel
+import com.mezri.bigburger.utils.schedulers.BaseSchedulerProvider
 
-class BasketFragmentViewModel : BaseViewModel() {
+class BasketFragmentViewModel(repository: Repository, schedulerProvider: BaseSchedulerProvider) :
+    BaseViewModel(repository, schedulerProvider) {
 
     val productUpdated = MutableLiveData<Product>().apply { value = null }
     var basketTotalPrice: Float = 0f

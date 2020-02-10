@@ -11,16 +11,9 @@ import com.mezri.bigburger.ui.main.MainFragment
 
 class MainActivity : AppCompatActivity(), MainActivityInterface {
 
-    override fun getAppDataBase(): AppDatabase = appDatabase
-
-    private lateinit var appDatabase: AppDatabase
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-
-        // init app data base
-        appDatabase = AppDatabase.getInstance(applicationContext)
 
         // show main fragment
         if (savedInstanceState == null) {

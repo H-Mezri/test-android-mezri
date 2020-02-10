@@ -1,5 +1,8 @@
 package com.mezri.bigburger.utils
 
+// Data base params
+const val DATABASE_NAME = "bigburger.room.db"
+
 // API params
 const val API_BASE_PATH = "https://bigburger.useradgents.com"
 
