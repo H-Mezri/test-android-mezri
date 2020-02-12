@@ -1,25 +1,29 @@
 package com.mezri.bigburger.ui.main
 
-import android.os.Build
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.mezri.bigburger.data.errors.AppMessages
 import com.mezri.bigburger.ui.base.BaseViewModelTest
 import io.reactivex.Single
+import kotlinx.coroutines.runBlocking
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.junit.runners.JUnit4
 import org.koin.test.inject
 import org.mockito.Mockito.`when`
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [Build.VERSION_CODES.O])
+
+@RunWith(JUnit4::class)
 class MainFragmentViewModelTest : BaseViewModelTest() {
 
+    @Rule
+    @JvmField
+    var instantTaskExecutorRule = InstantTaskExecutorRule()
     // View model to test
     private val mainFragmentViewModel: MainFragmentViewModel by inject()
 
     @Test
-    fun testGetProducts_OK() {
+    fun testGetProducts_OK() = runBlocking {
         // given
         `when`(mainFragmentViewModel.repository.loadProductList()).thenReturn(
             Single.just(productsList)
@@ -34,7 +38,7 @@ class MainFragmentViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun testGetProducts_KO_NETWORK_ERROR() {
+    fun testGetProducts_KO_NETWORK_ERROR() = runBlocking {
         // given
         val throwable = Throwable()
         `when`(mainFragmentViewModel.repository.loadProductList()).thenReturn(Single.error(throwable))
@@ -53,7 +57,7 @@ class MainFragmentViewModelTest : BaseViewModelTest() {
     }
 
     @Test
-    fun testGetProducts_KO_ALBUMS_NOT_FOUND() {
+    fun testGetProducts_KO_ALBUMS_NOT_FOUND() = runBlocking {
         // given
         `when`(mainFragmentViewModel.repository.loadProductList()).thenReturn(
             Single.just(listOf())

@@ -5,6 +5,10 @@ import com.mezri.bigburger.data.repository.Repository
 import com.mezri.bigburger.ui.main.MainFragmentViewModel
 import com.mezri.bigburger.utils.schedulers.BaseSchedulerProvider
 import com.mezri.bigburger.utils.schedulers.TrampolineSchedulerProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -29,14 +33,19 @@ abstract class BaseViewModelTest : KoinTest {
         Product(1, "title", "description", "http://thumbnail", 12.39f, 2)
     )
 
+    private val testCoroutineDispatcher = TestCoroutineDispatcher()
+
     @Before
     open fun before() {
         // start Koin
         startKoin { modules(testModule) }
+        Dispatchers.setMain(testCoroutineDispatcher)
     }
 
     @After
     open fun after() {
+        Dispatchers.resetMain()
+        testCoroutineDispatcher.cleanupTestCoroutines()
         stopKoin()
     }
 }
