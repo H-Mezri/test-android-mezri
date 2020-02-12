@@ -10,14 +10,14 @@ import com.mezri.bigburger.data.network.dto.ProductDTO
 interface BasketProductDAO {
 
     @Insert
-    fun insertProductInBasket(productDTO: ProductDTO): Long
+    suspend fun insertProductInBasket(productDTO: ProductDTO): Long
 
     @Query("SELECT * FROM PRODUCT")
-    fun selectBasketProducts(): MutableList<ProductDTO>
+    suspend fun selectBasketProducts(): MutableList<ProductDTO>
 
     @Delete
-    fun removeProductFromBasket(productDTO: ProductDTO): Int
+    suspend fun removeProductFromBasket(productDTO: ProductDTO): Int
 
     @Query("UPDATE PRODUCT SET amount = amount + :amount WHERE ref = :productId")
-    fun updateProductAmount(productId: Int, amount: Byte): Int
+    suspend fun updateProductAmount(productId: Int, amount: Byte): Int
 }

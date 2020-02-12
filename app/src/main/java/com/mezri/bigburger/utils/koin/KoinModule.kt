@@ -15,10 +15,10 @@ import org.koin.dsl.module
 
 val appModule = module {
     // Single instance of app database
-    single { Room.databaseBuilder(get(), AppDatabase::class.java, DATABASE_NAME).allowMainThreadQueries().build() }
+    single { Room.databaseBuilder(get(), AppDatabase::class.java, DATABASE_NAME).build() }
     // Single instance of the repository
     single { RepositoryImpl(get()) as Repository }
-    // Factory instance of the scheduler provider
+    // Factory instances of the scheduler provider
     factory { SchedulerProvider() as BaseSchedulerProvider }
     // View model providers
     viewModel { MainFragmentViewModel(get(), get()) }

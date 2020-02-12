@@ -86,6 +86,9 @@ class BasketFragment : BaseFragment() {
         if (fragmentViewModel.productUpdated.hasObservers()) {
             fragmentViewModel.productUpdated.removeObservers(viewLifecycleOwner)
         }
+        if (fragmentViewModel.isBasketProductChanged.hasObservers()) {
+            fragmentViewModel.isBasketProductChanged.removeObservers(viewLifecycleOwner)
+        }
     }
 
     override fun initObservers() {
@@ -97,17 +100,25 @@ class BasketFragment : BaseFragment() {
                     getString(R.string.basket_price, fragmentViewModel.basketTotalPrice)
             }
         })
+
+        fragmentViewModel.isBasketProductChanged.observe(viewLifecycleOwner, Observer {
+            it.let {
+                // calculate new basket price
+                fragmentViewModel.calculateBasketTotalPrice()
+                // update total basket price
+                txtBasketPrice.text =
+                    getString(R.string.basket_price, fragmentViewModel.basketTotalPrice)
+                // init recycler view products list
+                (recyclerBasketProducts.adapter as BasketRecyclerAdapter).setProducts(
+                    fragmentViewModel.basketProducts.toMutableList()
+                )
+            }
+        })
     }
 
     override fun onResume() {
         super.onResume()
         initActionBar()
-        // calculate new basket price
-        fragmentViewModel.calculateBasketTotalPrice()
-        // update total basket price
-        txtBasketPrice.text = getString(R.string.basket_price, fragmentViewModel.basketTotalPrice)
-        // init recycler view products list
-        (recyclerBasketProducts.adapter as BasketRecyclerAdapter).setProducts(fragmentViewModel.basketProducts.toMutableList())
     }
 
     override fun getViewModel(): BaseViewModel = fragmentViewModel

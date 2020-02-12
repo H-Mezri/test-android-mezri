@@ -10,14 +10,15 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract val basketProductDAO: BasketProductDAO
 
-    fun addProductToBasket(productDTO: ProductDTO) =
+    suspend fun addProductToBasket(productDTO: ProductDTO) =
         basketProductDAO.insertProductInBasket(productDTO)
 
-    fun removeProductFromBasket(productDTO: ProductDTO) =
+    suspend fun removeProductFromBasket(productDTO: ProductDTO) =
         basketProductDAO.removeProductFromBasket(productDTO)
 
-    fun loadProductsList(): MutableList<ProductDTO> = basketProductDAO.selectBasketProducts()
+    suspend fun loadProductsList(): MutableList<ProductDTO> =
+        basketProductDAO.selectBasketProducts()
 
-    fun updateProductAmount(product: Product, amount: Byte) =
+    suspend fun updateProductAmount(product: Product, amount: Byte) =
         basketProductDAO.updateProductAmount(product.id, amount)
 }

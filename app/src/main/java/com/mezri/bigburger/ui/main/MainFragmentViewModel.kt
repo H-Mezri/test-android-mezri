@@ -1,19 +1,18 @@
 package com.mezri.bigburger.ui.main
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.mezri.bigburger.data.errors.AppMessages
 import com.mezri.bigburger.data.model.Product
 import com.mezri.bigburger.data.repository.Repository
 import com.mezri.bigburger.ui.base.BaseViewModel
 import com.mezri.bigburger.utils.idling.EspressoIdlingResource
 import com.mezri.bigburger.utils.schedulers.BaseSchedulerProvider
-import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 class MainFragmentViewModel(repository: Repository, schedulerProvider: BaseSchedulerProvider) :
     BaseViewModel(repository, schedulerProvider) {
-
-    // composite to handle requests
-    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     // list of product in cache
     val productsListCache = mutableListOf<Product>()
@@ -41,7 +40,7 @@ class MainFragmentViewModel(repository: Repository, schedulerProvider: BaseSched
         }
 
         // call network service to load albums
-        compositeDisposable.add(
+        viewModelScope.launch {
             repository.loadProductList()
                 .observeOn(schedulerProvider.ui())
                 .subscribeOn(schedulerProvider.io())
@@ -82,7 +81,7 @@ class MainFragmentViewModel(repository: Repository, schedulerProvider: BaseSched
                     // Inform Espresso that app is ready
                     EspressoIdlingResource.decrement()
                 })
-        )
+        }
     }
 
     override fun clearTemporaryData() {
@@ -92,7 +91,6 @@ class MainFragmentViewModel(repository: Repository, schedulerProvider: BaseSched
 
     override fun onCleared() {
         super.onCleared()
-        // clear composite requests
-        compositeDisposable.dispose()
+        viewModelScope.cancel()
     }
 }

@@ -10,19 +10,19 @@ import io.reactivex.Single
 
 class RepositoryImpl(private val appDatabase: AppDatabase) : Repository {
 
-    override fun loadBasketProductList(): MutableList<Product> {
+    override suspend fun loadBasketProductList(): MutableList<Product> {
         return mapProduct(appDatabase.loadProductsList()).toMutableList()
     }
 
-    override fun addProductToBasket(product: Product): Long {
+    override suspend fun addProductToBasket(product: Product): Long {
         return appDatabase.addProductToBasket(mapToBasketProductDTO(product))
     }
 
-    override fun removeProductFromBasket(product: Product): Int {
+    override suspend fun removeProductFromBasket(product: Product): Int {
         return appDatabase.removeProductFromBasket(mapToBasketProductDTO(product))
     }
 
-    override fun updateProductAmount(product: Product, amount: Byte): Int {
+    override suspend fun updateProductAmount(product: Product, amount: Byte): Int {
         return appDatabase.updateProductAmount(product, amount)
     }
 
@@ -35,7 +35,7 @@ class RepositoryImpl(private val appDatabase: AppDatabase) : Repository {
      * /!\ /!\ In a bigger project repository must check if the data already exist in a local database an return it
      * if the data not found in local database or data is old, then trigger network request then save the result in local database
      */
-    override fun loadProductList(): Single<List<Product>> {
+    override suspend fun loadProductList(): Single<List<Product>> {
         return networkService.loadProducts().map { mapProduct(it) }
     }
 
